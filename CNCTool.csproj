@@ -63,7 +63,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Connection\IConnection.cs" />
+    <Compile Include="Connectivity\Connection.cs" />
+    <Compile Include="Connectivity\NetworkConnection.cs" />
+    <Compile Include="Connectivity\SerialConnection.cs" />
     <Compile Include="MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
