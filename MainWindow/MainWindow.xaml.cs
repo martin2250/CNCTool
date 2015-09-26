@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CNCTool
+namespace CNCTool.MainWindow
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
