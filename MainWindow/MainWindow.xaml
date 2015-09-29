@@ -32,17 +32,25 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <GridSplitter Width="2" VerticalAlignment="Stretch" Grid.Column="1" ResizeBehavior="PreviousAndNext" Grid.RowSpan="3"/>
-                <GridSplitter Height="2" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2" ResizeBehavior="PreviousAndNext"/>
+                <GridSplitter Width="4" VerticalAlignment="Stretch" Grid.Column="1" ResizeBehavior="PreviousAndNext" Grid.RowSpan="3"/>
+                <GridSplitter Height="4" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2" ResizeBehavior="PreviousAndNext"/>
 
-                <RichTextBox Name="editor_textBoxGCode" VerticalScrollBarVisibility="Visible" Grid.Column="0"  Grid.RowSpan="3" IsUndoEnabled="True" UndoLimit="1024"/>
+                <RichTextBox Name="editor_textBoxGCode" VerticalScrollBarVisibility="Visible" Grid.Column="0"  Grid.RowSpan="3" IsUndoEnabled="True" UndoLimit="1024">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
 
-                <h:HelixViewport3D Name="view" Grid.Row="0" Grid.Column="2">
+                <h:HelixViewport3D Name="view" Grid.Row="0" Grid.Column="2" ShowCoordinateSystem="True" ShowViewCube="False">
+                    <h:HelixViewport3D.Camera>
+                        <PerspectiveCamera Position="5, -15, 25" LookDirection="-5, 15,-25" UpDirection="0,0,1"/>
+                    </h:HelixViewport3D.Camera>
                     <h:DefaultLights/>
-					<h:GridLinesVisual3D MajorDistance="10" MinorDistance="1" Center="0,0,0" Thickness="0.04" Normal="0,0,1" Width="20" Length="20"/>
-                    <h:ArrowVisual3D Point1="0,0,0" Point2="0,0,2" Diameter="0.2"/>
-
-
+					
+                    <h:GridLinesVisual3D MajorDistance="10" MinorDistance="1" Center="0,0,0" Thickness="0.02" Normal="0,0,1" Width="100" Length="100"/>
+					<h:CoordinateSystemVisual3D/>
                 </h:HelixViewport3D>
             </Grid>
 
