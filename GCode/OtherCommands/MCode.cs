@@ -9,18 +9,16 @@ namespace CNCTool.GCode
 {
 	class MCode : GCodeCommand
 	{
-		public int Code { get; set; }
+		public double Code { get; set; }
 
-		public override bool SkipInNormalization { get { return false; } }
-
-		public MCode(int code)
+		public MCode(double code)
 		{
 			Code = code;
 		}
 
 		public override string GetGCode()
 		{
-			return $"M{Code}";
+			return string.Format(NumberFormat, "M{0}", Code);
 		}
 	}
 }

@@ -12,7 +12,5 @@ namespace CNCTool.GCode
 		public static NumberFormatInfo NumberFormat = new NumberFormatInfo() { NumberDecimalSeparator=".", NumberDecimalDigits=3 };	//prevent errors in regions that use comma as seperator
 
 		public abstract string GetGCode();
-
-		public abstract bool SkipInNormalization { get; }	//skip eg G20 or G90.1 to provide maximum compatibility
 	}
 }

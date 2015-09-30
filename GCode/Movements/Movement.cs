@@ -11,8 +11,6 @@ namespace CNCTool.GCode
 		public Vector3 Start, End;
 		public double? FeedRate = null;
 
-		public override bool SkipInNormalization { get { return false; } }
-
 		public Movement(Vector3 start, Vector3 end)
 		{
 			Start = start;

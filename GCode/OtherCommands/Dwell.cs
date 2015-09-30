@@ -16,11 +16,9 @@ namespace CNCTool.GCode
 			Seconds = seconds;
 		}
 
-		public override bool SkipInNormalization { get { return true; } }
-
 		public override string GetGCode()
 		{
-			return $"G4P{Seconds:0.#}";
+			return string.Format(NumberFormat, "G4P{0}", Seconds);
 		}
 	}
 }

@@ -65,9 +65,6 @@
     </ApplicationDefinition>
     <Compile Include="GCode\OtherCommands\Dwell.cs" />
     <Compile Include="GCode\OtherCommands\MCode.cs" />
-    <Compile Include="GCode\OtherCommands\SetArcCenterDistanceMode.cs" />
-    <Compile Include="GCode\OtherCommands\SetDistanceMode.cs" />
-    <Compile Include="GCode\OtherCommands\SetDistanceUnit.cs" />
     <Compile Include="Util\Bounds.cs" />
     <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -135,6 +132,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\Info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Examples\" />
+    <Folder Include="Resources\Text\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ShapeokoLogo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,8 +1,9 @@
 ﻿#region Imports
 
 using System;
-using System.Xml.Serialization;			// for various Xml attributes
+using System.Xml.Serialization;         // for various Xml attributes
 using System.Globalization;
+using System.Windows.Media.Media3D;
 
 #endregion
 
@@ -1554,5 +1555,10 @@ namespace CNCTool.GCode
 		public static readonly Vector3 Epsilon = new Vector3(double.Epsilon, double.Epsilon, double.Epsilon);
 
 		#endregion
+
+		public Point3D ToPoint3D()
+		{
+			return new Point3D(X, Y, Z);
+		}
 	}
 }
