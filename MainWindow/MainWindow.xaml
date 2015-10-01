@@ -27,30 +27,76 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+				
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+				
                 <GridSplitter Width="4" VerticalAlignment="Stretch" Grid.Column="1" ResizeBehavior="PreviousAndNext" Grid.RowSpan="3"/>
-                <GridSplitter Height="4" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2" ResizeBehavior="PreviousAndNext"/>
+                
 
-                <TextBox Name="editor_textBoxGCode" VerticalScrollBarVisibility="Visible" Grid.Column="0"  Grid.RowSpan="3" IsUndoEnabled="True" UndoLimit="1024" AcceptsReturn="True">
-                </TextBox>
+                <TextBox Name="editor_textBoxGCode" VerticalScrollBarVisibility="Visible" Grid.Column="0"  Grid.RowSpan="2" IsUndoEnabled="True" UndoLimit="1024" AcceptsReturn="True"/>
 
-                <h:HelixViewport3D Name="view" Grid.Row="0" Grid.Column="2" ShowCoordinateSystem="True" ShowViewCube="False">
-                    <h:HelixViewport3D.Camera>
-                        <PerspectiveCamera Position="5, -15, 25" LookDirection="-5, 15,-25" UpDirection="0,0,1"/>
-                    </h:HelixViewport3D.Camera>
-                    <h:DefaultLights/>
+
+                <Border Grid.Row="0" Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+                    <h:HelixViewport3D Name="view"  ShowCoordinateSystem="True" ShowViewCube="False">
+                        <h:HelixViewport3D.Camera>
+                            <PerspectiveCamera Position="5, -15, 25" LookDirection="-5, 15,-25" UpDirection="0,0,1"/>
+                        </h:HelixViewport3D.Camera>
+                        <h:DefaultLights/>
+                        <h:CoordinateSystemVisual3D ArrowLengths="3"/>
+                    </h:HelixViewport3D>
+                </Border>
+
+                <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button ToolTip="Open GCode File" Click="editor_buttonOpen_Click">
+                        <Button.Content>
+                            <Image Source="../Resources/Icons/Open.png" Margin="10" Width="32" Height="32"/>
+                        </Button.Content>
+                    </Button>
+                    <Button ToolTip="Save GCode File" Click="editor_buttonSave_Click">
+                        <Button.Content>
+                            <Image Source="../Resources/Icons/Save.png" Margin="10" Width="32" Height="32"/>
+                        </Button.Content>
+                    </Button>
+                    <Button ToolTip="Send GCode To Run Job Tab">
+                        <Button.Content>
+                            <Image Source="../Resources/Icons/Send.png" Margin="10" Width="32" Height="32"/>
+                        </Button.Content>
+                    </Button>
+
+                    <StackPanel Name="editor_DropDown" Orientation="Vertical" Margin="0,0,0,-112" MouseEnter="editor_DropDownEnter" MouseLeave="editor_DropDownLeave">
+                        <Button ToolTip="Split">
+                            <Button.Content>
+                                <Image Source="../Resources/Icons/Split.png" Margin="10" Width="32" Height="32"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Name="editor_buttonCleanUp" Visibility="Hidden" ToolTip="Clean Up GCode">
+                            <Button.Content>
+                                <Image Source="../Resources/Icons/CleanUp.png" Margin="10" Width="32" Height="32"/>
+                            </Button.Content>
+                        </Button>
+                        <Button ToolTip="Apply HeightMap">
+                            <Button.Content>
+                                <Image Source="../Resources/Icons/AutoLevelling.png" Margin="10" Width="32" Height="32"/>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+
+                    <ToggleButton ToolTip="Show HeightMap" Click="editor_buttonShowHeightMap_Click">
+                        <Grid>
+                        <Image Source="../Resources/Icons/AutoLevelling.png" Margin="10" Width="32" Height="32"/>
+                        <Image Name="editor_imgHeightMapCross" Source="../Resources/Icons/Cross.png" Margin="10" Width="32" Height="32"/>
+                        </Grid>
+                    </ToggleButton>
 					
-                    <!--<h:GridLinesVisual3D MajorDistance="10" MinorDistance="1" Center="0,0,0" Thickness="0.02" Normal="0,0,1" Width="100" Length="100"/>-->
-					<h:CoordinateSystemVisual3D ArrowLengths="3"/>
-                </h:HelixViewport3D>
-
-                <Canvas Grid.Column="2" Grid.Row="2">
-					<Button Canvas.Right="20" Canvas.Top="20" Content="Update" Click="buttonUpdateEditPreview_Click"/>
-				</Canvas>
+                    <Button ToolTip="Refresh Preview Window" Click="buttonUpdateEditPreview_Click">
+                        <Button.Content>
+                            <Image Source="../Resources/Icons/Refresh.png" Margin="10" Width="32" Height="32"/>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
             </Grid>
 
         </TabItem>

@@ -65,6 +65,8 @@
     </ApplicationDefinition>
     <Compile Include="GCode\OtherCommands\Dwell.cs" />
     <Compile Include="GCode\OtherCommands\MCode.cs" />
+    <Compile Include="MainWindow\MainWindow.Editor.cs" />
+    <Compile Include="MainWindow\MainWindow.Editor.Preview.cs" />
     <Compile Include="Util\Bounds.cs" />
     <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -138,7 +140,22 @@
     <Folder Include="Resources\Text\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ShapeokoLogo.txt" />
+    <Resource Include="Resources\Icons\Refresh.png" />
+    <Resource Include="Resources\Icons\Open.png" />
+    <Resource Include="Resources\Icons\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Send.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\CleanUp.png" />
+    <Resource Include="Resources\Icons\Split.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Cross.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
