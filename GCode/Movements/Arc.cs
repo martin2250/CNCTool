@@ -74,16 +74,14 @@ namespace CNCTool.GCode
 		{
 			get
 			{
-				double stretch;
+				double stretch = EndAngle -StartAngle; ;
 				if (Direction == ArcDirection.CW)
 				{
-					stretch = EndAngle - StartAngle;
 					if (stretch >= 0)
 						stretch -= 2 * Math.PI;
 				}
 				else
 				{
-					stretch = StartAngle - EndAngle;
 					if (stretch <= 0)
 						stretch += 2 * Math.PI;
 				}
