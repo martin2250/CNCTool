@@ -17,7 +17,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CNCTool.Dialog;
 
 namespace CNCTool.MainWindow
 {
@@ -39,10 +38,15 @@ namespace CNCTool.MainWindow
 		{
 			InitializeComponent();
 
-			view.Items.Add(editor_Grid);
-			view.Items.Add(editor_Path_Straight);
-			view.Items.Add(editor_Path_Arc);
-			view.Items.Add(editor_Path_Rapid);
+			editor_Preview.Items.Add(editor_Grid);
+			editor_Preview.Items.Add(editor_Path_Straight);
+			editor_Preview.Items.Add(editor_Path_Arc);
+			editor_Preview.Items.Add(editor_Path_Rapid);
+		}
+
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.Save();
 		}
 	}
 }

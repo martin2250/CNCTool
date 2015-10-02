@@ -1,4 +1,5 @@
-﻿using CNCTool.GCode;
+﻿using CNCTool.Dialog;
+using CNCTool.GCode;
 using CNCTool.Util;
 using Microsoft.Win32;
 using System;
@@ -98,10 +99,10 @@ namespace CNCTool.MainWindow
 
 		private void editor_btnResetCamera_Click(object sender, RoutedEventArgs e)
 		{
-			view.Camera.Position = new Point3D(5, -15, 25);
-			view.Camera.LookDirection = new Vector3D(-5, 15, -25);
-			view.Camera.UpDirection = new Vector3D(0, 0, 1);
-			view.ZoomExtents(400);
+			editor_Preview.Camera.Position = new Point3D(5, -15, 25);
+			editor_Preview.Camera.LookDirection = new Vector3D(-5, 15, -25);
+			editor_Preview.Camera.UpDirection = new Vector3D(0, 0, 1);
+			editor_Preview.ZoomExtents(400);
 		}
 
 		private void editor_btnInfo_Click(object sender, RoutedEventArgs e)

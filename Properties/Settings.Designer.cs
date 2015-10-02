@@ -34,5 +34,65 @@ namespace CNCTool.Properties {
                 this["EditorArcSplitDistance"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int BaudRateIndex {
+            get {
+                return ((int)(this["BaudRateIndex"]));
+            }
+            set {
+                this["BaudRateIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FirmwareIndex {
+            get {
+                return ((int)(this["FirmwareIndex"]));
+            }
+            set {
+                this["FirmwareIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1:5001")]
+        public string RemoteAddress {
+            get {
+                return ((string)(this["RemoteAddress"]));
+            }
+            set {
+                this["RemoteAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SerialPollRateIndex {
+            get {
+                return ((int)(this["SerialPollRateIndex"]));
+            }
+            set {
+                this["SerialPollRateIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PositionPollRateIndex {
+            get {
+                return ((int)(this["PositionPollRateIndex"]));
+            }
+            set {
+                this["PositionPollRateIndex"] = value;
+            }
+        }
     }
 }
