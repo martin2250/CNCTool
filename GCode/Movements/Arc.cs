@@ -40,7 +40,7 @@ namespace CNCTool.GCode
 				code += string.Format(NumberFormat, "Z{0:0.###}", End.Z);
 
 			if (Center.X != Start.X)
-				code += string.Format(NumberFormat, "I{0:0.###}", Center.X - Start.X);	//arc center is specified incrementally
+				code += string.Format(NumberFormat, "I{0:0.###}", Center.X - Start.X);  //arc center is specified incrementally
 			if (Center.Y != Start.Y)
 				code += string.Format(NumberFormat, "J{0:0.###}", Center.Y - Start.Y);
 
@@ -74,7 +74,7 @@ namespace CNCTool.GCode
 		{
 			get
 			{
-				double stretch = EndAngle -StartAngle; ;
+				double stretch = EndAngle - StartAngle; ;
 				if (Direction == ArcDirection.CW)
 				{
 					if (stretch >= 0)
@@ -95,7 +95,7 @@ namespace CNCTool.GCode
 			get // get average between both radii
 			{
 				return (
-					Math.Sqrt(Math.Pow(Start.X - Center.X, 2) + Math.Pow(Start.Y - Center.Y, 2)) + 
+					Math.Sqrt(Math.Pow(Start.X - Center.X, 2) + Math.Pow(Start.Y - Center.Y, 2)) +
 					Math.Sqrt(Math.Pow(End.X - Center.X, 2) + Math.Pow(End.Y - Center.Y, 2))
 					) / 2;
 			}
@@ -126,6 +126,35 @@ namespace CNCTool.GCode
 			pos.Z = Start.Z + (End.Z - Start.Z) * ratio;
 
 			return pos;
+		}
+
+		public override IEnumerable<Movement> Split(double length)
+		{
+			if (Length <= length)
+			{
+				yield return this;
+				yield break;
+			}
+			else
+			{
+				int divisions = (int)Math.Ceiling(Length / length);
+
+				Vector3 start = new Vector3(Start);
+
+				for (int i = 0; i < divisions; i++)
+				{
+					Vector3 end = Interpolate(((double)i + 1) / divisions);
+
+					Arc a = new Arc(start, end, Center, Direction);
+
+					if (i == 0)
+						a.FeedRate = FeedRate;
+
+					start = end;
+
+					yield return a;
+				}
+			}
 		}
 	}
 }

@@ -63,11 +63,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialog\TextInput.xaml.cs">
+      <DependentUpon>TextInput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GCode\OtherCommands\Dwell.cs" />
     <Compile Include="GCode\OtherCommands\MCode.cs" />
     <Compile Include="MainWindow\MainWindow.Editor.cs" />
     <Compile Include="MainWindow\MainWindow.Editor.Preview.cs" />
     <Compile Include="Util\Bounds.cs" />
+    <Page Include="Dialog\TextInput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -156,6 +163,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\Cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Dots.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Exclamation.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace CNCTool.GCode
 {
@@ -37,6 +39,35 @@ namespace CNCTool.GCode
 		public override Vector3 Interpolate(double ratio)
 		{
 			return Vector3.Interpolate(Start, End, ratio, true);
+		}
+
+		public override IEnumerable<Movement> Split(double length)
+		{
+			if (Rapid || Length <= length)
+			{
+				yield return this;
+				yield break;
+			}
+			else
+			{
+				int divisions = (int)Math.Ceiling(Length / length);
+
+				Vector3 start = new Vector3(Start);
+
+				for(int i = 0; i < divisions; i++)
+				{
+					Vector3 end = Interpolate(((double)i + 1) / divisions);
+
+					Straight s = new Straight(start, end, false);
+
+					if(i == 0)
+						s.FeedRate = FeedRate;
+
+					start = end;
+
+					yield return s;
+				}
+			}
 		}
 	}
 }

@@ -10,6 +10,9 @@ namespace CNCTool.GCode
 {
 	public class ToolPath : List<GCodeCommand>
 	{
+		private string[] file_header = new string[] {"G90", "G21", ""};
+
+		/*
 		public void SaveCommands(StreamWriter file)
 		{
 			file.WriteLine("G90");
@@ -22,6 +25,14 @@ namespace CNCTool.GCode
 			}
 
 			file.Close();
+		}*/
+
+		public string[] GetLines()
+		{
+			return Enumerable.Concat(
+				file_header,
+				this.Select((command) => { return command.GetGCode(); })
+				).ToArray();
 		}
 
 		public Bounds GetDimensions()
@@ -56,6 +67,25 @@ namespace CNCTool.GCode
 				d += MoveCommand.Length;
 			}
 			return d;
+		}
+
+		public ToolPath Split(double length)
+		{
+			ToolPath split = new ToolPath();
+
+			foreach(GCodeCommand c in this)
+			{
+				if(c is Movement)
+				{
+					split.AddRange(((Movement)c).Split(length));
+				}
+				else
+				{
+					split.Add(c);
+				}
+			}
+
+			return split;
 		}
 	}
 }

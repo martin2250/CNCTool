@@ -23,9 +23,9 @@
             </TabItem.Header>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300" MinWidth="200"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 				
                 <Grid.RowDefinitions>
@@ -34,10 +34,11 @@
                 </Grid.RowDefinitions>
 				
                 <GridSplitter Width="4" VerticalAlignment="Stretch" Grid.Column="1" ResizeBehavior="PreviousAndNext" Grid.RowSpan="3"/>
-                
 
-                <TextBox Name="editor_textBoxGCode" VerticalScrollBarVisibility="Visible" Grid.Column="0"  Grid.RowSpan="2" IsUndoEnabled="True" UndoLimit="1024" AcceptsReturn="True"/>
-
+                <DockPanel Grid.Column="0"  Grid.RowSpan="2">
+                    <Label Name="editor_labelError" DockPanel.Dock="Bottom" Visibility="Collapsed"/>
+                    <TextBox Name="editor_textBoxGCode" VerticalScrollBarVisibility="Visible" TextChanged="editor_textBox_Changed" IsUndoEnabled="True" UndoLimit="1024" AcceptsReturn="True"/>
+                </DockPanel>
 
                 <Border Grid.Row="0" Grid.Column="2" BorderThickness="2" BorderBrush="Black">
                     <h:HelixViewport3D Name="view"  ShowCoordinateSystem="True" ShowViewCube="False">
@@ -50,12 +51,12 @@
                 </Border>
 
                 <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button ToolTip="Open GCode File" Click="editor_buttonOpen_Click">
+                    <Button ToolTip="Open GCode File" Click="editor_btnOpen_Click">
                         <Button.Content>
                             <Image Source="../Resources/Icons/Open.png" Margin="10" Width="32" Height="32"/>
                         </Button.Content>
                     </Button>
-                    <Button ToolTip="Save GCode File" Click="editor_buttonSave_Click">
+                    <Button ToolTip="Save GCode File" Click="editor_btnSave_Click">
                         <Button.Content>
                             <Image Source="../Resources/Icons/Save.png" Margin="10" Width="32" Height="32"/>
                         </Button.Content>
@@ -66,34 +67,58 @@
                         </Button.Content>
                     </Button>
 
-                    <StackPanel Name="editor_DropDown" Orientation="Vertical" Margin="0,0,0,-112" MouseEnter="editor_DropDownEnter" MouseLeave="editor_DropDownLeave">
-                        <Button ToolTip="Split">
+                    <StackPanel Orientation="Vertical" Margin="0,0,0,-280" MouseEnter="editor_DropDownEnter" MouseLeave="editor_DropDownLeave">
+                        <Button Name="editor_btnDropDown_Other">
                             <Button.Content>
-                                <Image Source="../Resources/Icons/Split.png" Margin="10" Width="32" Height="32"/>
+                                <Image Source="../Resources/Icons/Dots.png" Margin="10" Width="32" Height="32"/>
                             </Button.Content>
                         </Button>
-                        <Button Name="editor_buttonCleanUp" Visibility="Hidden" ToolTip="Clean Up GCode">
+
+                        <Button Name="editor_buttonCleanUp" Visibility="Hidden" Click="editor_btnCleanUp_Click" ToolTip="Clean Up GCode&#x0a;Replaces GCode with parsed version.&#x0a;Be sure to hit update before you do that">
                             <Button.Content>
                                 <Image Source="../Resources/Icons/CleanUp.png" Margin="10" Width="32" Height="32"/>
                             </Button.Content>
                         </Button>
-                        <Button ToolTip="Apply HeightMap">
+
+                        <Button ToolTip="Split GCode" Click="editor_btnSplit_Click">
+                            <Button.Content>
+                                <Image Source="../Resources/Icons/Split.png" Margin="10" Width="32" Height="32"/>
+                            </Button.Content>
+                        </Button>
+						
+                       
+                        <Button ToolTip="Apply HeightMap" Loaded="editor_btnApplyHeightMap_Load">
                             <Button.Content>
                                 <Image Source="../Resources/Icons/AutoLevelling.png" Margin="10" Width="32" Height="32"/>
                             </Button.Content>
                         </Button>
+
+                        <Button ToolTip="Parsed File Stats" Click="editor_btnInfo_Click">
+                            <Button.Content>
+                                <Image Source="../Resources/Icons/Info.png" Margin="10" Width="32" Height="32"/>
+                            </Button.Content>
+                        </Button>
+
+                        <Button ToolTip="Reset Camera" Click="editor_btnResetCamera_Click">
+                            <Button.Content>
+                                <Image Source="../Resources/Icons/Undo.png" Margin="10" Width="32" Height="32"/>
+                            </Button.Content>
+                        </Button>
                     </StackPanel>
 
-                    <ToggleButton ToolTip="Show HeightMap" Click="editor_buttonShowHeightMap_Click">
+                    <ToggleButton ToolTip="Show HeightMap" Click="editor_btnShowHeightMap_Click">
                         <Grid>
                         <Image Source="../Resources/Icons/AutoLevelling.png" Margin="10" Width="32" Height="32"/>
                         <Image Name="editor_imgHeightMapCross" Source="../Resources/Icons/Cross.png" Margin="10" Width="32" Height="32"/>
                         </Grid>
                     </ToggleButton>
 					
-                    <Button ToolTip="Refresh Preview Window" Click="buttonUpdateEditPreview_Click">
+                    <Button ToolTip="Refresh Preview Window" Click="editor_btnUpdatePreview_Click">
                         <Button.Content>
-                            <Image Source="../Resources/Icons/Refresh.png" Margin="10" Width="32" Height="32"/>
+                            <Grid>
+                                <Image Source="../Resources/Icons/Refresh.png" Margin="10" Width="32" Height="32"/>
+                                <Image Visibility="Hidden" Name="editor_imgTextChanged" Source="../Resources/Icons/Exclamation.png" HorizontalAlignment="Right" VerticalAlignment="Top" Width="16" Height="16"/>
+                            </Grid>
                         </Button.Content>
                     </Button>
                 </StackPanel>

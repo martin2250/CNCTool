@@ -28,5 +28,7 @@ namespace CNCTool.GCode
 		}
 
 		public abstract Vector3 Interpolate(double ratio);
+
+		public abstract IEnumerable<Movement> Split(double length);
 	}
 }
