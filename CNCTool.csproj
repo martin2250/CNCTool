@@ -70,6 +70,7 @@
     <Compile Include="GCode\OtherCommands\MCode.cs" />
     <Compile Include="MainWindow\MainWindow.Editor.cs" />
     <Compile Include="MainWindow\MainWindow.Editor.Preview.cs" />
+    <Compile Include="MainWindow\MainWindow.Machine.cs" />
     <Compile Include="Util\Bounds.cs" />
     <Page Include="Dialog\TextInput.xaml">
       <SubType>Designer</SubType>

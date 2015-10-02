@@ -158,11 +158,11 @@
 
                         <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Serial Port</Label>
                         <ComboBox Grid.Row="0"  Grid.Column="1" Name="machine_comBox_Port" Margin="5"/>
-                        <Button Grid.Row="0" Grid.Column="2" Margin="5" Padding="5">Connect to SerialPort</Button>
+                        <Button Grid.Row="0" Grid.Column="2" Margin="5" Padding="5" Click="machine_btnConnectSerial_Click">Connect to SerialPort</Button>
 
                         <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Remote Address</Label>
                         <TextBox Grid.Row="1" Grid.Column="1" Name="machine_textBoxRemote" Margin="5" Padding="5" Text="{Binding Source={x:Static properties:Settings.Default}, Path=RemoteAddress}" VerticalAlignment="Center"/>
-                        <Button Grid.Row="1" Grid.Column="2" Margin="5" Padding="5">Connect to Host</Button>
+                        <Button Grid.Row="1" Grid.Column="2" Margin="5" Padding="5" Click="machine_btnConnectRemote_Click">Connect to Host</Button>
                     </Grid>
                 </GroupBox>
 
@@ -208,18 +208,18 @@
                         <ComboBox Grid.Row="2"  Grid.Column="1" Name="machine_comBoxSerialPollRate" Margin="5" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=SerialPollRateIndex}">
                             <ComboBoxItem Content="5ms"/>
                             <ComboBoxItem Content="10ms"/>
-                            <ComboBoxItem Content="25ms" IsSelected="True"/>
+                            <ComboBoxItem Content="25ms"/>
                             <ComboBoxItem Content="50ms"/>
                             <ComboBoxItem Content="100ms"/>
                             <ComboBoxItem Content="250ms"/>
                             <ComboBoxItem Content="500ms"/>
                         </ComboBox>
-						
+
                         <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Machine Poll Rate</Label>
                         <ComboBox Grid.Row="3"  Grid.Column="1" Name="machine_comBoxPositionPollRate" Margin="5" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=PositionPollRateIndex}">
                             <ComboBoxItem Content="Disabled"/>
                             <ComboBoxItem Content="50ms"/>
-                            <ComboBoxItem Content="100ms" IsSelected="True"/>
+                            <ComboBoxItem Content="100ms"/>
                             <ComboBoxItem Content="250ms"/>
                             <ComboBoxItem Content="500ms"/>
                             <ComboBoxItem Content="1000ms"/>
@@ -258,5 +258,4 @@
             </TabItem.Header>
         </TabItem>
     </TabControl>
-
 </Window>

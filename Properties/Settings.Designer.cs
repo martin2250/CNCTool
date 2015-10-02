@@ -73,7 +73,7 @@ namespace CNCTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int SerialPollRateIndex {
             get {
                 return ((int)(this["SerialPollRateIndex"]));
@@ -85,7 +85,7 @@ namespace CNCTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int PositionPollRateIndex {
             get {
                 return ((int)(this["PositionPollRateIndex"]));
