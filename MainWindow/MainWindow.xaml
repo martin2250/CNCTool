@@ -14,248 +14,272 @@
             <Setter Property="Height" Value="16"/>
         </Style>
     </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Resources/Icons/Code.png" Width="16"/>
+                        <Label Content="G-Code Editor"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" MinWidth="200"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-    <TabControl>
-        <TabItem>
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../Resources/Icons/Code.png" Width="16"/>
-                    <Label Content="G-Code Editor"/>
-                </StackPanel>
-            </TabItem.Header>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300" MinWidth="200"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                    <GridSplitter Width="4" VerticalAlignment="Stretch" Grid.Column="1" ResizeBehavior="PreviousAndNext" Grid.RowSpan="3"/>
 
-                <GridSplitter Width="4" VerticalAlignment="Stretch" Grid.Column="1" ResizeBehavior="PreviousAndNext" Grid.RowSpan="3"/>
+                    <DockPanel Grid.Column="0"  Grid.RowSpan="2">
+                        <Label Name="editor_labelError" DockPanel.Dock="Bottom" Visibility="Collapsed"/>
+                        <TextBox Name="editor_textBoxGCode" VerticalScrollBarVisibility="Visible" TextChanged="editor_textBox_Changed" IsUndoEnabled="True" UndoLimit="1024" AcceptsReturn="True"/>
+                    </DockPanel>
 
-                <DockPanel Grid.Column="0"  Grid.RowSpan="2">
-                    <Label Name="editor_labelError" DockPanel.Dock="Bottom" Visibility="Collapsed"/>
-                    <TextBox Name="editor_textBoxGCode" VerticalScrollBarVisibility="Visible" TextChanged="editor_textBox_Changed" IsUndoEnabled="True" UndoLimit="1024" AcceptsReturn="True"/>
-                </DockPanel>
+                    <Border Grid.Row="0" Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+                        <h:HelixViewport3D Name="editor_Preview"  ShowCoordinateSystem="True" ShowViewCube="False">
+                            <h:HelixViewport3D.Camera>
+                                <PerspectiveCamera Position="5, -15, 25" LookDirection="-5, 15,-25" UpDirection="0,0,1"/>
+                            </h:HelixViewport3D.Camera>
+                            <h:DefaultLights/>
+                            <h:CoordinateSystemVisual3D ArrowLengths="3"/>
+                        </h:HelixViewport3D>
+                    </Border>
 
-                <Border Grid.Row="0" Grid.Column="2" BorderThickness="2" BorderBrush="Black">
-                    <h:HelixViewport3D Name="editor_Preview"  ShowCoordinateSystem="True" ShowViewCube="False">
-                        <h:HelixViewport3D.Camera>
-                            <PerspectiveCamera Position="5, -15, 25" LookDirection="-5, 15,-25" UpDirection="0,0,1"/>
-                        </h:HelixViewport3D.Camera>
-                        <h:DefaultLights/>
-                        <h:CoordinateSystemVisual3D ArrowLengths="3"/>
-                    </h:HelixViewport3D>
-                </Border>
-
-                <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button ToolTip="Open GCode File" Click="editor_btnOpen_Click">
-                        <Button.Content>
-                            <Image Source="../Resources/Icons/Open.png" Margin="10" Width="32" Height="32"/>
-                        </Button.Content>
-                    </Button>
-                    <Button ToolTip="Save GCode File" Click="editor_btnSave_Click">
-                        <Button.Content>
-                            <Image Source="../Resources/Icons/Save.png" Margin="10" Width="32" Height="32"/>
-                        </Button.Content>
-                    </Button>
-                    <Button ToolTip="Send GCode To Run Job Tab">
-                        <Button.Content>
-                            <Image Source="../Resources/Icons/Send.png" Margin="10" Width="32" Height="32"/>
-                        </Button.Content>
-                    </Button>
-
-                    <StackPanel Orientation="Vertical" Margin="0,0,0,-280" MouseEnter="editor_DropDownEnter" MouseLeave="editor_DropDownLeave">
-                        <Button Name="editor_btnDropDown_Other">
+                    <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button ToolTip="Open GCode File" Click="editor_btnOpen_Click">
                             <Button.Content>
-                                <Image Source="../Resources/Icons/Dots.png" Margin="10" Width="32" Height="32"/>
+                                <Image Source="../Resources/Icons/Open.png" Margin="10" Width="32" Height="32"/>
+                            </Button.Content>
+                        </Button>
+                        <Button ToolTip="Save GCode File" Click="editor_btnSave_Click">
+                            <Button.Content>
+                                <Image Source="../Resources/Icons/Save.png" Margin="10" Width="32" Height="32"/>
+                            </Button.Content>
+                        </Button>
+                        <Button ToolTip="Send GCode To Run Job Tab">
+                            <Button.Content>
+                                <Image Source="../Resources/Icons/Send.png" Margin="10" Width="32" Height="32"/>
                             </Button.Content>
                         </Button>
 
-                        <Button Name="editor_buttonCleanUp" Visibility="Hidden" Click="editor_btnCleanUp_Click" ToolTip="Clean Up GCode&#x0a;Replaces GCode with parsed version.&#x0a;Be sure to hit update before you do that">
-                            <Button.Content>
-                                <Image Source="../Resources/Icons/CleanUp.png" Margin="10" Width="32" Height="32"/>
-                            </Button.Content>
-                        </Button>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,-280" MouseEnter="editor_DropDownEnter" MouseLeave="editor_DropDownLeave">
+                            <Button Name="editor_btnDropDown_Other">
+                                <Button.Content>
+                                    <Image Source="../Resources/Icons/Dots.png" Margin="10" Width="32" Height="32"/>
+                                </Button.Content>
+                            </Button>
 
-                        <Button ToolTip="Split GCode" Click="editor_btnSplit_Click">
-                            <Button.Content>
-                                <Image Source="../Resources/Icons/Split.png" Margin="10" Width="32" Height="32"/>
-                            </Button.Content>
-                        </Button>
+                            <Button Name="editor_buttonCleanUp" Visibility="Hidden" Click="editor_btnCleanUp_Click" ToolTip="Clean Up GCode&#x0a;Replaces GCode with parsed version.&#x0a;Be sure to hit update before you do that">
+                                <Button.Content>
+                                    <Image Source="../Resources/Icons/CleanUp.png" Margin="10" Width="32" Height="32"/>
+                                </Button.Content>
+                            </Button>
+
+                            <Button ToolTip="Split GCode" Click="editor_btnSplit_Click">
+                                <Button.Content>
+                                    <Image Source="../Resources/Icons/Split.png" Margin="10" Width="32" Height="32"/>
+                                </Button.Content>
+                            </Button>
 
 
-                        <Button ToolTip="Apply HeightMap" Loaded="editor_btnApplyHeightMap_Load">
-                            <Button.Content>
+                            <Button ToolTip="Apply HeightMap" Loaded="editor_btnApplyHeightMap_Load">
+                                <Button.Content>
+                                    <Image Source="../Resources/Icons/AutoLevelling.png" Margin="10" Width="32" Height="32"/>
+                                </Button.Content>
+                            </Button>
+
+                            <Button ToolTip="Parsed File Stats" Click="editor_btnInfo_Click">
+                                <Button.Content>
+                                    <Image Source="../Resources/Icons/Info.png" Margin="10" Width="32" Height="32"/>
+                                </Button.Content>
+                            </Button>
+
+                            <Button ToolTip="Reset Camera" Click="editor_btnResetCamera_Click">
+                                <Button.Content>
+                                    <Image Source="../Resources/Icons/Undo.png" Margin="10" Width="32" Height="32"/>
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>
+
+                        <ToggleButton ToolTip="Show HeightMap" Click="editor_btnShowHeightMap_Click">
+                            <Grid>
                                 <Image Source="../Resources/Icons/AutoLevelling.png" Margin="10" Width="32" Height="32"/>
-                            </Button.Content>
-                        </Button>
+                                <Image Name="editor_imgHeightMapCross" Source="../Resources/Icons/Cross.png" Margin="10" Width="32" Height="32"/>
+                            </Grid>
+                        </ToggleButton>
 
-                        <Button ToolTip="Parsed File Stats" Click="editor_btnInfo_Click">
+                        <Button ToolTip="Parse File and refresh Preview Window" Click="editor_btnUpdatePreview_Click">
                             <Button.Content>
-                                <Image Source="../Resources/Icons/Info.png" Margin="10" Width="32" Height="32"/>
-                            </Button.Content>
-                        </Button>
-
-                        <Button ToolTip="Reset Camera" Click="editor_btnResetCamera_Click">
-                            <Button.Content>
-                                <Image Source="../Resources/Icons/Undo.png" Margin="10" Width="32" Height="32"/>
+                                <Grid>
+                                    <Image Source="../Resources/Icons/Refresh.png" Margin="10" Width="32" Height="32"/>
+                                    <Image Visibility="Hidden" Name="editor_imgTextChanged" Source="../Resources/Icons/Exclamation.png" HorizontalAlignment="Right" VerticalAlignment="Top" Width="16" Height="16"/>
+                                </Grid>
                             </Button.Content>
                         </Button>
                     </StackPanel>
+                </Grid>
 
-                    <ToggleButton ToolTip="Show HeightMap" Click="editor_btnShowHeightMap_Click">
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Resources/Icons/Machine.png" Width="16"/>
+                        <Label Content="Machine"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Canvas>
+                    <GroupBox Canvas.Left="10" Canvas.Top="10" Name="machineGroupConnection">
+                        <GroupBox.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../Resources/Icons/Connection.png" Height="25" Width="25"/>
+                                <Label>Connection</Label>
+                            </StackPanel>
+                        </GroupBox.Header>
+
                         <Grid>
-                            <Image Source="../Resources/Icons/AutoLevelling.png" Margin="10" Width="32" Height="32"/>
-                            <Image Name="editor_imgHeightMapCross" Source="../Resources/Icons/Cross.png" Margin="10" Width="32" Height="32"/>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Serial Port</Label>
+                            <ComboBox Grid.Row="0"  Grid.Column="1" Name="machine_comBox_Port" Margin="5" Loaded="machine_comBox_Port_Loaded"/>
+                            <Button Grid.Row="0" Grid.Column="2" Margin="5" Padding="5" Click="machine_btnConnectSerial_Click">Connect to SerialPort</Button>
+
+                            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Remote Address</Label>
+                            <TextBox Grid.Row="1" Grid.Column="1" Name="machine_textBoxRemote" Margin="5" Padding="5" Text="{Binding Source={x:Static properties:Settings.Default}, Path=RemoteAddress}" VerticalAlignment="Center"/>
+                            <Button Grid.Row="1" Grid.Column="2" Margin="5" Padding="5" Click="machine_btnConnectRemote_Click">Connect to Host</Button>
+
+                            <Button Name="machineBtnDisconnect" Grid.RowSpan="2" Grid.ColumnSpan="3" Visibility="Hidden" Click="machineBtnDisconnect_Click"/>
                         </Grid>
-                    </ToggleButton>
+                    </GroupBox>
 
-                    <Button ToolTip="Refresh Preview Window" Click="editor_btnUpdatePreview_Click">
-                        <Button.Content>
-                            <Grid>
-                                <Image Source="../Resources/Icons/Refresh.png" Margin="10" Width="32" Height="32"/>
-                                <Image Visibility="Hidden" Name="editor_imgTextChanged" Source="../Resources/Icons/Exclamation.png" HorizontalAlignment="Right" VerticalAlignment="Top" Width="16" Height="16"/>
-                            </Grid>
-                        </Button.Content>
-                    </Button>
-                </StackPanel>
-            </Grid>
+                    <GroupBox Canvas.Left="10" Canvas.Top="124" Name="machineGroupSettings">
+                        <GroupBox.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../Resources/Icons/Gear.png" Height="25" Width="25"/>
+                                <Label>Settings</Label>
+                            </StackPanel>
+                        </GroupBox.Header>
 
-        </TabItem>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
 
-        <TabItem>
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../Resources/Icons/Machine.png" Width="16"/>
-                    <Label Content="Machine"/>
-                </StackPanel>
-            </TabItem.Header>
-            <Canvas>
-                <GroupBox Canvas.Left="10" Canvas.Top="10">
-                    <GroupBox.Header>
+                            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Firmware</Label>
+                            <ComboBox Grid.Row="0"  Grid.Column="1" Name="machine_comBoxFirmware" Margin="5" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=FirmwareIndex}">
+                                <ComboBoxItem Content="GRBL 0.9" IsSelected="True"/>
+                                <ComboBoxItem Content="Marlin"/>
+                            </ComboBox>
+
+                            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">BaudRate</Label>
+                            <ComboBox Grid.Row="1"  Grid.Column="1" Name="machine_comBoxBaudRate" Margin="5" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=BaudRateIndex}">
+                                <ComboBoxItem Content="4800"/>
+                                <ComboBoxItem Content="9600"/>
+                                <ComboBoxItem Content="19200"/>
+                                <ComboBoxItem Content="28800"/>
+                                <ComboBoxItem Content="38400"/>
+                                <ComboBoxItem Content="57600"/>
+                                <ComboBoxItem Content="115200"/>
+                                <ComboBoxItem Content="230400"/>
+                            </ComboBox>
+
+                            <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Machine Poll Rate</Label>
+                            <ComboBox Grid.Row="2"  Grid.Column="1" Name="machine_comBoxPositionPollRate" Margin="5" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=PositionPollRateIndex}">
+                                <ComboBoxItem Content="25ms"/>
+                                <ComboBoxItem Content="50ms"/>
+                                <ComboBoxItem Content="100ms"/>
+                                <ComboBoxItem Content="250ms"/>
+                                <ComboBoxItem Content="500ms"/>
+                                <ComboBoxItem Content="1000ms"/>
+                            </ComboBox>
+
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Name="machineGroupManual" Canvas.Left="378" Canvas.Top="10">
+                        <GroupBox.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../Resources/Icons/Joystick.png" Height="25" Width="25"/>
+                                <Label>Manual Control</Label>
+                            </StackPanel>
+                        </GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="../Resources/Icons/Connection.png" Height="25" Width="25"/>
-                            <Label>Connection</Label>
+                            <TextBox Name="machineTextBoxCommand" Width="200" Height="25" Margin="10" PreviewKeyDown="machineTextBoxCommand_KeyDown"/>
+                            <Button Content=" Send " Margin="10" Click="machineBtnSend_Click"/>
                         </StackPanel>
-                    </GroupBox.Header>
+                    </GroupBox>
+                </Canvas>
+            </TabItem>
 
-                    <Grid ShowGridLines="True">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Resources/Icons/RunJob.png" Width="16"/>
+                        <Label Content="Run Job"/>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
 
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Resources/Icons/AutoLevelling.png" Width="16"/>
+                        <Label Content="AutoLevelling"/>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
 
-                        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Serial Port</Label>
-                        <ComboBox Grid.Row="0"  Grid.Column="1" Name="machine_comBox_Port" Margin="5"/>
-                        <Button Grid.Row="0" Grid.Column="2" Margin="5" Padding="5" Click="machine_btnConnectSerial_Click">Connect to SerialPort</Button>
-
-                        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Remote Address</Label>
-                        <TextBox Grid.Row="1" Grid.Column="1" Name="machine_textBoxRemote" Margin="5" Padding="5" Text="{Binding Source={x:Static properties:Settings.Default}, Path=RemoteAddress}" VerticalAlignment="Center"/>
-                        <Button Grid.Row="1" Grid.Column="2" Margin="5" Padding="5" Click="machine_btnConnectRemote_Click">Connect to Host</Button>
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox Canvas.Left="10" Canvas.Top="124">
-                    <GroupBox.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="../Resources/Icons/Machine.png" Height="25" Width="25"/>
-                            <Label>Interpreter</Label>
-                        </StackPanel>
-                    </GroupBox.Header>
-
-                    <Grid ShowGridLines="True">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="120"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Firmware</Label>
-                        <ComboBox Grid.Row="0"  Grid.Column="1" Name="machine_comBoxFirmware" Margin="5" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=FirmwareIndex}">
-                            <ComboBoxItem Content="GRBL 0.9" IsSelected="True"/>
-                            <ComboBoxItem Content="Marlin"/>
-                        </ComboBox>
-
-                        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">BaudRate</Label>
-                        <ComboBox Grid.Row="1"  Grid.Column="1" Name="machine_comBoxBaudRate" Margin="5" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=BaudRateIndex}">
-                            <ComboBoxItem Content="4800"/>
-                            <ComboBoxItem Content="9600"/>
-                            <ComboBoxItem Content="19200"/>
-                            <ComboBoxItem Content="28800"/>
-                            <ComboBoxItem Content="38400"/>
-                            <ComboBoxItem Content="57600"/>
-                            <ComboBoxItem Content="115200"/>
-                            <ComboBoxItem Content="230400"/>
-                        </ComboBox>
-
-                        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Serial Poll Rate</Label>
-                        <ComboBox Grid.Row="2"  Grid.Column="1" Name="machine_comBoxSerialPollRate" Margin="5" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=SerialPollRateIndex}">
-                            <ComboBoxItem Content="5ms"/>
-                            <ComboBoxItem Content="10ms"/>
-                            <ComboBoxItem Content="25ms"/>
-                            <ComboBoxItem Content="50ms"/>
-                            <ComboBoxItem Content="100ms"/>
-                            <ComboBoxItem Content="250ms"/>
-                            <ComboBoxItem Content="500ms"/>
-                        </ComboBox>
-
-                        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Machine Poll Rate</Label>
-                        <ComboBox Grid.Row="3"  Grid.Column="1" Name="machine_comBoxPositionPollRate" Margin="5" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=PositionPollRateIndex}">
-                            <ComboBoxItem Content="Disabled"/>
-                            <ComboBoxItem Content="50ms"/>
-                            <ComboBoxItem Content="100ms"/>
-                            <ComboBoxItem Content="250ms"/>
-                            <ComboBoxItem Content="500ms"/>
-                            <ComboBoxItem Content="1000ms"/>
-                        </ComboBox>
-
-
-                    </Grid>
-                </GroupBox>
-            </Canvas>
-        </TabItem>
-
-        <TabItem>
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../Resources/Icons/RunJob.png" Width="16"/>
-                    <Label Content="Run Job"/>
-                </StackPanel>
-            </TabItem.Header>
-        </TabItem>
-
-        <TabItem>
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../Resources/Icons/AutoLevelling.png" Width="16"/>
-                    <Label Content="AutoLevelling"/>
-                </StackPanel>
-            </TabItem.Header>
-        </TabItem>
-
-        <TabItem>
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../Resources/Icons/Info.png" Width="16"/>
-                    <Label Content="About"/>
-                </StackPanel>
-            </TabItem.Header>
-        </TabItem>
-    </TabControl>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Resources/Icons/Info.png" Width="16"/>
+                        <Label Content="About"/>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label>Character Buffer</Label>
+            <ProgressBar Name="progressBarBuffer" Width="120" Height="20"/>
+            <Label>Status</Label>
+            <Label Name="labelStatus" Width="100" Content="Not Connected"/>
+            <Label>Work Position: X</Label>
+            <Label Name="labelPosX" Width="50"/>
+            <Label>Y</Label>
+            <Label Name="labelPosY" Width="50"/>
+            <Label>Z</Label>
+            <Label Name="labelPosZ" Width="50"/>
+            <Image Name="imageStatusUpdate" Source="../Resources/Icons/Update.png" Width="16" Height="16" VerticalAlignment="Center" RenderTransformOrigin=".5,.5">
+                <Image.RenderTransform>
+                    <RotateTransform/>
+                </Image.RenderTransform>
+			</Image>
+        </StackPanel>
+    </Grid>
 </Window>

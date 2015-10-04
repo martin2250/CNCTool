@@ -59,5 +59,18 @@ namespace CNCTool.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 23	A G or M command value in the block is not an integer. For example, G4 can&apos;t be G4.13. Some G-code commands are floating point (G92.1), but these are ignored.
+        ///24	Two G-code commands that both require the use of the XYZ axis words were detected in the block.
+        ///25	A G-code word was repeated in the block.
+        ///26	A G-code command implicitly or explicitly requires XYZ axis words in the block, but none were detected.
+        ///27	The G-code protocol mandates N line numbers to be within the range of 1-99,999. We think that&apos;s a [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string GrblErrors {
+            get {
+                return ResourceManager.GetString("GrblErrors", resourceCulture);
+            }
+        }
     }
 }

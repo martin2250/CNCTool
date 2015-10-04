@@ -63,6 +63,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Connectivity\Communicator.cs" />
+    <Compile Include="Connectivity\GRBL09.cs" />
     <Compile Include="Dialog\TextInput.xaml.cs">
       <DependentUpon>TextInput.xaml</DependentUpon>
     </Compile>
@@ -72,6 +74,7 @@
     <Compile Include="MainWindow\MainWindow.Editor.Preview.cs" />
     <Compile Include="MainWindow\MainWindow.Machine.cs" />
     <Compile Include="Util\Bounds.cs" />
+    <Compile Include="Util\GrblErrorProvider.cs" />
     <Page Include="Dialog\TextInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -173,6 +176,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\Exclamation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Joystick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Update.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GrblErrors.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -28,19 +28,17 @@ namespace CNCTool.Connectivity
 
 			Receiver.DoWork += Receiver_DoWork;
 			Receiver.ProgressChanged += Receiver_ProgressChanged;
-			Receiver.RunWorkerCompleted += Receiver_RunWorkerCompleted;
 
 			Receiver.RunWorkerAsync();
 		}
 
-		private void Receiver_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-		{
-			Disconnected();
-		}
-
 		private void Receiver_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
-			LineReceived((string)e.UserState);
+			Action<string> temp = LineReceived;
+			if (temp != null)
+			{
+				temp((string)e.UserState);
+			}
 		}
 
 		private void Receiver_DoWork(object sender, DoWorkEventArgs e)
@@ -55,18 +53,43 @@ namespace CNCTool.Connectivity
 						Receiver.ReportProgress(0, line);
 				}
 			}
-			catch { }   //only raises exception when disconnected (manually or by loss of connection)
+			catch	//only raises exception when disconnected (manually or by loss of connection)
+			{
+				Disconnect();
+			}   
 		}
 
 		public void SendLine(string line)
 		{
-			ConnectionWriter.WriteLine(line);
+			Send(line + "\n");
+		}
+
+		public void Send(string message)
+		{
+			try
+			{
+				ConnectionWriter.Write(message);
+			}
+			catch
+			{
+				Disconnect();
+			}
 		}
 
 		public virtual void Disconnect()
 		{
-			ConnectionWriter.Close();
-			ConnectionReader.Close();
+			if (Disconnected != null)
+			{
+				Disconnected();
+			}
+			try
+			{
+				if (ConnectionWriter != null)
+					ConnectionWriter.Close();
+				if (ConnectionReader != null)
+					ConnectionReader.Close();
+			}
+			catch { }	//possibly device not responding error
 		}
 	}
 }

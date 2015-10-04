@@ -94,5 +94,17 @@ namespace CNCTool.Properties {
                 this["PositionPollRateIndex"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("127")]
+        public int GrblCharBuffer {
+            get {
+                return ((int)(this["GrblCharBuffer"]));
+            }
+            set {
+                this["GrblCharBuffer"] = value;
+            }
+        }
     }
 }
