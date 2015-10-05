@@ -14,14 +14,11 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="425"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-		
-        <GridSplitter Width="4" VerticalAlignment="Stretch" Grid.Column="1" ResizeBehavior="PreviousAndNext" Grid.RowSpan="2"/>
-		
-        <Border Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+				
+        <Border Grid.Column="1" BorderThickness="2" BorderBrush="Black" Margin="5">
             <h:HelixViewport3D Name="editor_Preview"  ShowCoordinateSystem="True" ShowViewCube="False">
                 <h:HelixViewport3D.Camera>
                     <PerspectiveCamera Position="5, -15, 25" LookDirection="-5, 15,-25" UpDirection="0,0,1"/>
@@ -96,14 +93,13 @@
                                 </Button.Content>
                             </Button>
 
-                            <Button ToolTip="Split GCode" Click="editor_btnSplit_Click">
+                            <Button Name="editorButtonSplit" ToolTip="Split GCode" Click="editor_btnSplit_Click">
                                 <Button.Content>
                                     <Image Source="../Resources/Icons/Split.png" Margin="10" Width="32" Height="32"/>
                                 </Button.Content>
                             </Button>
 
-
-                            <Button ToolTip="Apply HeightMap" Loaded="editor_btnApplyHeightMap_Load">
+                            <Button Name="editorButtonApplyMap" ToolTip="Apply HeightMap">
                                 <Button.Content>
                                     <Image Source="../Resources/Icons/AutoLevelling.png" Margin="10" Width="32" Height="32"/>
                                 </Button.Content>
@@ -129,7 +125,7 @@
                             </Grid>
                         </ToggleButton>
 
-                        <Button ToolTip="Parse File and refresh Preview Window" Click="editor_btnUpdatePreview_Click">
+                        <Button Name="editorButtonParse"  ToolTip="Parse File and refresh Preview Window" Click="editor_btnUpdatePreview_Click">
                             <Button.Content>
                                 <Grid>
                                     <Image Source="../Resources/Icons/Refresh.png" Margin="10" Width="32" Height="32"/>
@@ -232,7 +228,7 @@
 
                         </Grid>
                     </GroupBox>
-                    <GroupBox Name="machineGroupManual" Canvas.Left="378" Canvas.Top="10" IsEnabled="False">
+                    <GroupBox Name="machineGroupManual" Canvas.Left="10" Canvas.Bottom="10" IsEnabled="False">
                         <GroupBox.Header>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="../Resources/Icons/Joystick.png" Height="25" Width="25"/>
@@ -319,7 +315,7 @@
                 </TabItem.Header>
             </TabItem>
         </TabControl>
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label>Character Buffer</Label>
             <ProgressBar Name="progressBarBuffer" Width="120" Height="20"/>
             <Label>Status</Label>
