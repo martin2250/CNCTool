@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CNCTool.Connectivity
 {
@@ -15,14 +17,16 @@ namespace CNCTool.Connectivity
 		protected StreamReader ConnectionReader;
 		protected StreamWriter ConnectionWriter;
 
+		private Queue<string> SendQueue = new Queue<string>();
+
 		BackgroundWorker Receiver;
 
 		public abstract void Connect();
 
 		protected void Init(Stream stream)
 		{
-			ConnectionReader = new StreamReader(stream, Encoding.ASCII) { };
-			ConnectionWriter = new StreamWriter(stream, Encoding.ASCII) { AutoFlush = true, NewLine = "\n" };
+			ConnectionReader = new StreamReader(stream, Encoding.ASCII);
+			ConnectionWriter = new StreamWriter(stream, Encoding.ASCII);
 
 			Receiver = new BackgroundWorker() { WorkerReportsProgress = true };
 
@@ -47,10 +51,32 @@ namespace CNCTool.Connectivity
 			{
 				while (true)
 				{
-					string line = ConnectionReader.ReadLine();
+					Task<string> receiveTask = ConnectionReader.ReadLineAsync();
 
-					if (!string.IsNullOrWhiteSpace(line))
-						Receiver.ReportProgress(0, line);
+					while (!receiveTask.IsCompleted)
+					{
+						if (SendQueue.Count > 0)
+						{
+							while (SendQueue.Count > 0)
+								ConnectionWriter.Write(SendQueue.Dequeue());
+
+							ConnectionWriter.Flush();
+						}
+
+						Task.Delay(20).Wait();
+					}
+
+					if(receiveTask.Exception == null)
+					{
+						string line = receiveTask.Result;
+
+						if (!string.IsNullOrWhiteSpace(line))
+							Receiver.ReportProgress(0, line);
+					}
+					else
+					{
+						throw receiveTask.Exception;
+					}				
 				}
 			}
 			catch	//only raises exception when disconnected (manually or by loss of connection)
@@ -66,14 +92,7 @@ namespace CNCTool.Connectivity
 
 		public void Send(string message)
 		{
-			try
-			{
-				ConnectionWriter.Write(message);
-			}
-			catch
-			{
-				Disconnect();
-			}
+			SendQueue.Enqueue(message);
 		}
 
 		public virtual void Disconnect()

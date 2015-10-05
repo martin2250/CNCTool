@@ -23,5 +23,8 @@
     <Setting Name="GrblCharBuffer" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">127</Value>
     </Setting>
+    <Setting Name="SerialDtrEnable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

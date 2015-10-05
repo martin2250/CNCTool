@@ -1,6 +1,7 @@
 ﻿using CNCTool.Dialog;
 using CNCTool.GCode;
 using CNCTool.Util;
+using HelixToolkit.Wpf;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -12,28 +13,39 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace CNCTool.MainWindow
 {
 	partial class MainWindow
 	{
-		private void editor_DropDownEnter(object sender, MouseEventArgs e)
+		GCodeParser editor_Parser = new GCodeParser();
+		ToolPath editor_ToolPath = new ToolPath();
+
+		LinesVisual3D editor_Path_Straight = new LinesVisual3D() { Thickness = 2 };
+		LinesVisual3D editor_Path_Arc = new LinesVisual3D() { Thickness = 2, Color = Colors.Blue };
+		LinesVisual3D editor_Path_Rapid = new LinesVisual3D() { Thickness = 1, Color = Colors.Green };
+
+		GridLinesVisual3D editor_Grid = new GridLinesVisual3D() { MajorDistance = 10, MinorDistance = 5, Center = new Point3D(0, 0, 0), Thickness = 0.03, Normal = new Vector3D(0, 0, 1), Width = 100, Length = 100 };
+
+		TruncatedConeVisual3D editor_Tool = new TruncatedConeVisual3D() { Height=5, Normal=new Vector3D(0, 0, -1), Visible=false };
+
+		private void InitEditor()
 		{
-			StackPanel dropDown = sender as StackPanel;
-			int height = (dropDown.Children.Count - 2) * 56;
-			dropDown.Margin = new Thickness(0, -height, 0, 0);
-			editor_buttonCleanUp.Visibility = Visibility.Visible;
-			editor_btnDropDown_Other.Visibility = Visibility.Collapsed;
+			editor_Preview.Items.Add(editor_Grid);
+			editor_Preview.Items.Add(editor_Path_Straight);
+			editor_Preview.Items.Add(editor_Path_Arc);
+			editor_Preview.Items.Add(editor_Path_Rapid);
+			editor_Preview.Items.Add(editor_Tool);
+
+			UpdateUiEvent += UpdateUiEditor;
 		}
 
-		private void editor_DropDownLeave(object sender, MouseEventArgs e)
+		private void UpdateUiEditor()
 		{
-			StackPanel dropDown = sender as StackPanel;
-			int height = (dropDown.Children.Count - 1) * 56;
-			dropDown.Margin = new Thickness(0, 0, 0, -height);
-			editor_buttonCleanUp.Visibility = Visibility.Hidden;
-			editor_btnDropDown_Other.Visibility = Visibility.Visible;
+			editorButtonSendJob.IsEnabled = runToolPath == null;
+			editor_Tool.Visible = MachineInterface != null;
 		}
 
 		private void editor_btnShowHeightMap_Click(object sender, RoutedEventArgs e)
@@ -43,6 +55,19 @@ namespace CNCTool.MainWindow
 			editor_imgHeightMapCross.Visibility = ((bool)button.IsChecked) ? Visibility.Hidden : Visibility.Visible;
 		}
 
+
+		//TODO: replace false with 'can apply'
+		private void editor_btnApplyHeightMap_Load(object sender, RoutedEventArgs e)
+		{
+			((Button)sender).IsEnabled = false;
+		}
+
+		private void editor_textBox_Changed(object sender, TextChangedEventArgs e)
+		{
+			editor_imgTextChanged.Visibility = Visibility.Visible;
+		}
+
+		#region FileIO
 		private void editor_btnOpen_Click(object sender, RoutedEventArgs e)
 		{
 			OpenFileDialog ofd = new OpenFileDialog()
@@ -63,7 +88,7 @@ namespace CNCTool.MainWindow
 			{
 				editor_textBoxGCode.Text = File.ReadAllText(((OpenFileDialog)sender).FileName);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Console.WriteLine("Error opening file: {0}", ex.ToString());
 				MessageBox.Show("Could not open File");
@@ -96,6 +121,8 @@ namespace CNCTool.MainWindow
 				MessageBox.Show("Could not save File");
 			}
 		}
+		#endregion
+		#region Buttons
 
 		private void editor_btnResetCamera_Click(object sender, RoutedEventArgs e)
 		{
@@ -120,12 +147,6 @@ namespace CNCTool.MainWindow
 			MessageBox.Show(info.ToString());
 		}
 
-		//TODO: replace false with 'can apply'
-		private void editor_btnApplyHeightMap_Load(object sender, RoutedEventArgs e)
-		{
-			((Button)sender).IsEnabled = false;
-		}
-
 		private void editor_btnUpdatePreview_Click(object sender, RoutedEventArgs e)
 		{
 			editor_ParseGCode();
@@ -136,11 +157,6 @@ namespace CNCTool.MainWindow
 		private void editor_btnCleanUp_Click(object sender, RoutedEventArgs e)
 		{
 			editor_textBoxGCode.Text = string.Join("\n", editor_ToolPath.GetLines());
-		}
-
-		private void editor_textBox_Changed(object sender, TextChangedEventArgs e)
-		{
-			editor_imgTextChanged.Visibility = Visibility.Visible;
 		}
 
 		private void editor_btnSplit_Click(object sender, RoutedEventArgs e)
@@ -168,5 +184,47 @@ namespace CNCTool.MainWindow
 				editor_UpdatePreview();
 			}
 		}
+
+		private void editorButtonSendJobClick(object sender, RoutedEventArgs e)
+		{
+			if (editor_ToolPath == null)
+			{
+				MessageBox.Show("Please update GCode first");
+				return;
+			}
+
+			if (runToolPath != null)
+			{
+				MessageBox.Show("Please cancel current job first");
+				return;
+			}
+
+			runToolPath = editor_ToolPath;
+			runNextLineIndex = 0;
+
+			mainTabCtrl.SelectedIndex = 2;
+
+			UpdateUi();
+		} 
+		#endregion
+		#region DropDownMenu
+		private void editor_DropDownEnter(object sender, MouseEventArgs e)
+		{
+			StackPanel dropDown = sender as StackPanel;
+			int height = (dropDown.Children.Count - 2) * 56;
+			dropDown.Margin = new Thickness(0, -height, 0, 0);
+			editor_buttonCleanUp.Visibility = Visibility.Visible;
+			editor_btnDropDown_Other.Visibility = Visibility.Collapsed;
+		}
+
+		private void editor_DropDownLeave(object sender, MouseEventArgs e)
+		{
+			StackPanel dropDown = sender as StackPanel;
+			int height = (dropDown.Children.Count - 1) * 56;
+			dropDown.Margin = new Thickness(0, 0, 0, -height);
+			editor_buttonCleanUp.Visibility = Visibility.Hidden;
+			editor_btnDropDown_Other.Visibility = Visibility.Visible;
+		} 
+		#endregion
 	}
 }

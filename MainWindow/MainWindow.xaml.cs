@@ -20,103 +20,49 @@ using System.Windows.Shapes;
 
 namespace CNCTool.MainWindow
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : Window
 	{
-		GCodeParser editor_Parser = new GCodeParser();
-		ToolPath editor_ToolPath = new ToolPath();
+		#region UpdateUi
+		private event Action UpdateUiEvent;
 
-		LinesVisual3D editor_Path_Straight = new LinesVisual3D() { Thickness = 2 };
-		LinesVisual3D editor_Path_Arc = new LinesVisual3D() { Thickness = 2, Color = Colors.Blue };
-		LinesVisual3D editor_Path_Rapid = new LinesVisual3D() { Thickness = 1, Color = Colors.Green };
+		private void UpdateUi()
+		{
+			if (System.Threading.Thread.CurrentThread != Dispatcher.Thread)
+			{
+				Dispatcher.Invoke(UpdateUi);
+				return;
+			}
 
-		GridLinesVisual3D editor_Grid = new GridLinesVisual3D() { MajorDistance = 10, MinorDistance = 5, Center = new Point3D(0, 0, 0), Thickness = 0.03, Normal = new Vector3D(0, 0, 1), Width = 100, Length = 100 };
+			if (UpdateUiEvent != null)
+				UpdateUiEvent();
+		}
+		#endregion
 
 		public MainWindow()
 		{
 			InitializeComponent();
 
-			editor_Preview.Items.Add(editor_Grid);
-			editor_Preview.Items.Add(editor_Path_Straight);
-			editor_Preview.Items.Add(editor_Path_Arc);
-			editor_Preview.Items.Add(editor_Path_Rapid);
+			InitEditor();
+			InitMachine();
+			InitRun();
+
+			UpdateUi();
+		}
+
+		#region Closing
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (MachineInterface != null)
+			{
+				MessageBox.Show("Can't exit while connected");
+				e.Cancel = true;
+			}
 		}
 
 		private void Window_Closed(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.Save();
 		}
-
-		private void machineSendManual()
-		{
-			if (MachineInterface == null)
-				return;
-
-			string text = machineTextBoxCommand.Text;
-
-			if (MachineInterface.BufferSpace < text.Length)
-				MessageBox.Show("Not enough space in buffer");
-			else
-			{
-				MachineInterface.SendLine(text);
-
-				if (machineManualIndex > -1)
-					machineManualHistory.RemoveAt(machineManualIndex);
-
-				machineManualIndex = -1;
-
-				machineManualHistory.Insert(0, text);
-				machineTextBoxCommand.Text = "";
-			}
-		}
-
-		private void machineBtnSend_Click(object sender, RoutedEventArgs e)
-		{
-			machineSendManual();
-		}
-
-		private List<string> machineManualHistory = new List<string>();
-		private int machineManualIndex = -1;
-
-		private void machineTextBoxCommand_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.Key == Key.Return)
-			{
-				e.Handled = true;
-				machineSendManual();
-				return;
-			}
-
-			if (e.Key == Key.Down)
-			{
-				e.Handled = true;
-
-				if (machineManualIndex > -1)
-				{
-					machineManualIndex--;
-
-					if (machineManualIndex > -1)
-						machineTextBoxCommand.Text = machineManualHistory[machineManualIndex];
-					else
-						machineTextBoxCommand.Text = "";
-                }
-				return;
-			}
-
-			if (e.Key == Key.Up)
-			{
-				e.Handled = true;
-
-				if (machineManualIndex < machineManualHistory.Count - 1)
-				{
-					machineManualIndex++;
-					machineTextBoxCommand.Text = machineManualHistory[machineManualIndex];
-				}
-
-				return;
-			}
-		}
+		#endregion
 	}
 }

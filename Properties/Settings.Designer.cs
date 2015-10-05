@@ -106,5 +106,17 @@ namespace CNCTool.Properties {
                 this["GrblCharBuffer"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SerialDtrEnable {
+            get {
+                return ((bool)(this["SerialDtrEnable"]));
+            }
+            set {
+                this["SerialDtrEnable"] = value;
+            }
+        }
     }
 }

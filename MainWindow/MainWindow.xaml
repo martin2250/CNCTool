@@ -6,20 +6,14 @@
 		xmlns:h="http://helix-toolkit.org/wpf"
 		xmlns:properties="clr-namespace:CNCTool.Properties"
         Title="CNCTool" Height="600" Width="800"
+		Closing="Window_Closing"
 		Closed="Window_Closed">
-
-    <Window.Resources>
-        <Style x:Key="iconStyle" TargetType="Image">
-            <Setter Property="Width" Value="16"/>
-            <Setter Property="Height" Value="16"/>
-        </Style>
-    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <TabControl>
+        <TabControl Name="mainTabCtrl" SelectionChanged="mainTabCtrl_SelectionChanged">
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -67,7 +61,7 @@
                                 <Image Source="../Resources/Icons/Save.png" Margin="10" Width="32" Height="32"/>
                             </Button.Content>
                         </Button>
-                        <Button ToolTip="Send GCode To Run Job Tab">
+                        <Button Name="editorButtonSendJob"  ToolTip="Send GCode To Run Job Tab" Click="editorButtonSendJobClick">
                             <Button.Content>
                                 <Image Source="../Resources/Icons/Send.png" Margin="10" Width="32" Height="32"/>
                             </Button.Content>
@@ -129,9 +123,7 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-
             </TabItem>
-
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -171,7 +163,6 @@
                             <Button Name="machineBtnDisconnect" Grid.RowSpan="2" Grid.ColumnSpan="3" Visibility="Hidden" Click="machineBtnDisconnect_Click"/>
                         </Grid>
                     </GroupBox>
-
                     <GroupBox Canvas.Left="10" Canvas.Top="124" Name="machineGroupSettings">
                         <GroupBox.Header>
                             <StackPanel Orientation="Horizontal">
@@ -182,6 +173,7 @@
 
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -219,10 +211,12 @@
                                 <ComboBoxItem Content="1000ms"/>
                             </ComboBox>
 
+                            <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Use DTR (Serial)</Label>
+                            <CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=SerialDtrEnable}"/>
 
                         </Grid>
                     </GroupBox>
-                    <GroupBox Name="machineGroupManual" Canvas.Left="378" Canvas.Top="10">
+                    <GroupBox Name="machineGroupManual" Canvas.Left="378" Canvas.Top="10" IsEnabled="False">
                         <GroupBox.Header>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="../Resources/Icons/Joystick.png" Height="25" Width="25"/>
@@ -236,7 +230,6 @@
                     </GroupBox>
                 </Canvas>
             </TabItem>
-
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -244,8 +237,55 @@
                         <Label Content="Run Job"/>
                     </StackPanel>
                 </TabItem.Header>
-            </TabItem>
+                <Canvas>
+                    <GroupBox Canvas.Left="10" Canvas.Top="10" Name="runGroupControls">
+                        <GroupBox.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../Resources/Icons/Start.png" Width="16"/>
+                                <Label Content="Controls"/>
+                            </StackPanel>
+                        </GroupBox.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Margin="10" Name="runButtonStart" Click="runButtonStart_Click" ToolTip="Run Job" IsEnabled="False">
+                                <Image Source="../Resources/Icons/Start.png" Width="32"  Margin="8"/>
+                            </Button>
+                            <Button Margin="10" Name="runButtonPause" Click="runButtonPause_Click" ToolTip="Pause Job" IsEnabled="False">
+                                <Image Source="../Resources/Icons/Pause.png" Width="32"  Margin="8"/>
+                            </Button>
+                            <Button Margin="10" Name="runButtonStop" Click="runButtonStop_Click" ToolTip="Stop Job and unload ToolPath" IsEnabled="False">
+                                <Image Source="../Resources/Icons/Stop.png" Width="32" Margin="8"/>
+                            </Button>
+                            <Button Margin="10" Name="runButtonReload" Click="runButtonReload_Click" ToolTip="Start at Line 0" IsEnabled="False">
+                                <Image Source="../Resources/Icons/Update.png" Width="32" Margin="8"/>
+                            </Button>
 
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Canvas.Left="10" Canvas.Top="120">
+                        <GroupBox.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../Resources/Icons/Info.png" Width="16"/>
+                                <Label Content="Info"/>
+                            </StackPanel>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0">Line</Label>
+                            <Label Grid.Row="1" Grid.Column="0">Distance</Label>
+                            <Label Grid.Row="0" Grid.Column="1" Name="runLabelLine"/>
+                            <Label Grid.Row="1" Grid.Column="1" Name="runLabelDistance"/>
+                        </Grid>
+					</GroupBox>
+                </Canvas>
+            </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -254,7 +294,6 @@
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
-
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -279,7 +318,7 @@
                 <Image.RenderTransform>
                     <RotateTransform/>
                 </Image.RenderTransform>
-			</Image>
+            </Image>
         </StackPanel>
     </Grid>
 </Window>

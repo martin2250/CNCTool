@@ -6,9 +6,11 @@ namespace CNCTool.Connectivity
 	{
 		private SerialPort port;
 
-		public SerialConnection(string portName, int baudRate)
+		public SerialConnection(string portName, int baudRate, bool Dtr)
 		{
 			port = new SerialPort(portName, baudRate);
+
+			port.DtrEnable = Dtr;
 
 			Path = $"{portName}@{baudRate} baud";
 		}
