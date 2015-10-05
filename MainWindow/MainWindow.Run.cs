@@ -111,11 +111,5 @@ namespace CNCTool.MainWindow
 			UpdateUi();
 		}
 		#endregion
-
-		private void mainTabCtrl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (runSendTimer.Enabled)
-				e.Handled = true;
-		}
 	}
 }

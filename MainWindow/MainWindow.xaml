@@ -13,7 +13,41 @@
             <RowDefinition/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <TabControl Name="mainTabCtrl" SelectionChanged="mainTabCtrl_SelectionChanged">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+		
+        <GridSplitter Width="4" VerticalAlignment="Stretch" Grid.Column="1" ResizeBehavior="PreviousAndNext" Grid.RowSpan="2"/>
+		
+        <Border Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+            <h:HelixViewport3D Name="editor_Preview"  ShowCoordinateSystem="True" ShowViewCube="False">
+                <h:HelixViewport3D.Camera>
+                    <PerspectiveCamera Position="5, -15, 25" LookDirection="-5, 15,-25" UpDirection="0,0,1"/>
+                </h:HelixViewport3D.Camera>
+                <h:DefaultLights/>
+                <h:CoordinateSystemVisual3D ArrowLengths="3"/>
+            </h:HelixViewport3D>
+        </Border>
+		
+        <TabControl Name="mainTabCtrl" TabStripPlacement="Left" Grid.Column="0">
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <ContentPresenter Content="{TemplateBinding Content}">
+                                    <ContentPresenter.LayoutTransform>
+                                        <RotateTransform Angle="270" />
+                                    </ContentPresenter.LayoutTransform>
+                                </ContentPresenter>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Padding" Value="5" />
+                </Style>
+            </TabControl.Resources>
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -22,35 +56,17 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300" MinWidth="200"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <GridSplitter Width="4" VerticalAlignment="Stretch" Grid.Column="1" ResizeBehavior="PreviousAndNext" Grid.RowSpan="3"/>
-
-                    <DockPanel Grid.Column="0"  Grid.RowSpan="2">
+                    <DockPanel>
                         <Label Name="editor_labelError" DockPanel.Dock="Bottom" Visibility="Collapsed"/>
                         <TextBox Name="editor_textBoxGCode" VerticalScrollBarVisibility="Visible" TextChanged="editor_textBox_Changed" IsUndoEnabled="True" UndoLimit="1024" AcceptsReturn="True"/>
                     </DockPanel>
-
-                    <Border Grid.Row="0" Grid.Column="2" BorderThickness="2" BorderBrush="Black">
-                        <h:HelixViewport3D Name="editor_Preview"  ShowCoordinateSystem="True" ShowViewCube="False">
-                            <h:HelixViewport3D.Camera>
-                                <PerspectiveCamera Position="5, -15, 25" LookDirection="-5, 15,-25" UpDirection="0,0,1"/>
-                            </h:HelixViewport3D.Camera>
-                            <h:DefaultLights/>
-                            <h:CoordinateSystemVisual3D ArrowLengths="3"/>
-                        </h:HelixViewport3D>
-                    </Border>
-
-                    <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+					
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button ToolTip="Open GCode File" Click="editor_btnOpen_Click">
                             <Button.Content>
                                 <Image Source="../Resources/Icons/Open.png" Margin="10" Width="32" Height="32"/>
@@ -303,7 +319,7 @@
                 </TabItem.Header>
             </TabItem>
         </TabControl>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal">
             <Label>Character Buffer</Label>
             <ProgressBar Name="progressBarBuffer" Width="120" Height="20"/>
             <Label>Status</Label>
