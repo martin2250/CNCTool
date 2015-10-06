@@ -29,8 +29,10 @@ namespace CNCTool.MainWindow
 		private void UpdateUiMachine()
 		{
 			machineBtnDisconnect.Visibility = (MachineInterface == null) ? Visibility.Hidden : Visibility.Visible;
+			machineBtnDisconnect.IsEnabled = (!buttonCanRun.IsChecked.Value);
+
 			machineGroupSettings.IsEnabled = MachineInterface == null;
-			machineGroupManual.IsEnabled = MachineInterface != null;
+			machineGroupManual.IsEnabled = (MachineInterface != null) && (!buttonCanRun.IsChecked.Value);
 
 			UpdateStatusStrip();
 		}
@@ -78,8 +80,8 @@ namespace CNCTool.MainWindow
 				labelPosZ.Content = MachineInterface.WorkPosition.Z.ToString(GCodeCommand.NumberFormat);
 
 				Vector3 ToolPos = MachineInterface.WorkPosition;
-				ToolPos.Z += 5;
-				editor_Tool.Origin = ToolPos.ToPoint3D();
+				ToolPos.Z += previewToolVisual.Height;
+				previewToolVisual.Origin = ToolPos.ToPoint3D();
 
 				((RotateTransform)imageStatusUpdate.RenderTransform).Angle += 11.25;
 			}

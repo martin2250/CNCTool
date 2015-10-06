@@ -38,10 +38,13 @@ namespace CNCTool.MainWindow
 		}
 		#endregion
 
+		public bool IsCheckedState { get; set; }
+
 		public MainWindow()
 		{
 			InitializeComponent();
 
+			InitPreview();
 			InitEditor();
 			InitMachine();
 			InitRun();
@@ -64,5 +67,10 @@ namespace CNCTool.MainWindow
 			Properties.Settings.Default.Save();
 		}
 		#endregion
+
+		private void buttonCanRun_Click(object sender, RoutedEventArgs e)
+		{
+			UpdateUi();
+		}
 	}
 }

@@ -71,7 +71,7 @@
     <Compile Include="GCode\OtherCommands\Dwell.cs" />
     <Compile Include="GCode\OtherCommands\MCode.cs" />
     <Compile Include="MainWindow\MainWindow.Editor.cs" />
-    <Compile Include="MainWindow\MainWindow.Editor.Preview.cs" />
+    <Compile Include="MainWindow\MainWindow.Preview.cs" />
     <Compile Include="MainWindow\MainWindow.Machine.cs" />
     <Compile Include="MainWindow\MainWindow.Run.cs" />
     <Compile Include="Util\Bounds.cs" />
@@ -195,6 +195,13 @@
     <Resource Include="Resources\Icons\Stop.png" />
     <Resource Include="Resources\Icons\Pause.png" />
     <Resource Include="Resources\Icons\Start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\ArrowRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\LockClosed.png" />
+    <Resource Include="Resources\Icons\LockOpen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

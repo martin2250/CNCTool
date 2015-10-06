@@ -12,22 +12,26 @@ namespace CNCTool.MainWindow
 {
 	partial class MainWindow
 	{
-		private ToolPath runToolPath;
 		private int runNextLineIndex = 0;
-
 		private Timer runSendTimer = new Timer(50) { AutoReset = true };
 
 		private void UpdateUIRun()
 		{
-			runButtonStart.IsEnabled = (MachineInterface != null) && (runToolPath != null) && (runNextLineIndex < runToolPath.Count) && (!runSendTimer.Enabled);
-			runButtonPause.IsEnabled = (runSendTimer.Enabled);
-			runButtonStop.IsEnabled = (runToolPath != null);
-			runButtonReload.IsEnabled = (!runSendTimer.Enabled) && (runToolPath != null) && (runNextLineIndex != 0);
+			buttonCanRun.IsEnabled = (!runSendTimer.Enabled);
 
-			if (runToolPath == null)
-				runLabelLine.Content = "";
-			else
-				runLabelLine.Content = $"{runNextLineIndex}/{runToolPath.Count}";
+			runButtonStart.IsEnabled = (MachineInterface != null) && (runNextLineIndex < previewPath.Count) && (!runSendTimer.Enabled);
+			runButtonPause.IsEnabled = (runSendTimer.Enabled);
+			runButtonReload.IsEnabled = (!runSendTimer.Enabled) && (runNextLineIndex != 0);
+
+			labelLineNumberPre.Visibility = (buttonCanRun.IsChecked.Value) ? Visibility.Visible : Visibility.Hidden;
+			labelLineNumber.Visibility = (buttonCanRun.IsChecked.Value) ? Visibility.Visible : Visibility.Hidden;
+
+			UpdateLineNumber();
+        }
+
+		private void UpdateLineNumber()
+		{
+			labelLineNumber.Content = $"{runNextLineIndex}/{previewPath.Count}";
 		}
 
 		private void InitRun()
@@ -39,14 +43,14 @@ namespace CNCTool.MainWindow
 
 		private void RunSendTimer_Elapsed(object sender, ElapsedEventArgs e)
 		{
-			if (runToolPath == null || MachineInterface == null)
+			if (MachineInterface == null)
 			{
 				runSendTimer.Stop();
 				UpdateUi();
 				return;
 			}
 
-			if (runNextLineIndex >= runToolPath.Count)
+			if (runNextLineIndex >= previewPath.Count)
 			{
 				runSendTimer.Stop();
 				UpdateUi();
@@ -54,7 +58,7 @@ namespace CNCTool.MainWindow
 				return;
 			}
 
-			string line = runToolPath[runNextLineIndex].GetGCode();
+			string line = previewPath[runNextLineIndex].GetGCode();
 
 			if (line.Length > MachineInterface.BufferSpace)
 				return;
@@ -63,19 +67,13 @@ namespace CNCTool.MainWindow
 
 			runNextLineIndex++;
 
-			UpdateUi();
+			Dispatcher.Invoke(UpdateLineNumber);
 		}
 
 		#region Buttons
 		private void runButtonStart_Click(object sender, RoutedEventArgs e)
 		{
-			if (runToolPath == null)
-			{
-				MessageBox.Show("No Toolpath loaded");
-				return;
-			}
-
-			if (runNextLineIndex >= runToolPath.Count)
+			if (runNextLineIndex >= previewPath.Count)
 			{
 				MessageBox.Show("No more lines left to send");
 				return;
@@ -89,17 +87,6 @@ namespace CNCTool.MainWindow
 		private void runButtonPause_Click(object sender, RoutedEventArgs e)
 		{
 			runSendTimer.Stop();
-
-			UpdateUi();
-		}
-
-		private void runButtonStop_Click(object sender, RoutedEventArgs e)
-		{
-			runSendTimer.Stop();
-
-			runToolPath = null;
-
-			runNextLineIndex = 0;
 
 			UpdateUi();
 		}
