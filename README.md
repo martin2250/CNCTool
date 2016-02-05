@@ -8,3 +8,5 @@ You can connect to your machine via Network and Serial, other forms of communica
 -3D Preview  
 -Autolevelling as seen in GrblHeightProbe2  
 --fully integrated into 3D Preview
+
+###Has been replaced by [OpenCNCPilot](https://github.com/martin2250/OpenCNCPilot)
